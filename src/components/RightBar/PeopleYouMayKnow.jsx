@@ -18,11 +18,11 @@ const PeopleYouMayKnow = () => {
     return (
         <Card className=" rounded-4 border-1  border-light-subtle">
             <Card.Body className="pt-4 pb-0">
-                <h6 className="m-0">Potrebbero interessarti</h6>
+                <h6 className="m-0">Persone che potresti conoscere</h6>
                 <span
                     className="text-body-tertiary"
                     style={{ fontSize: "0.9rem" }}>
-                    Pagine per te
+                    Della tua azienda
                 </span>
                 <div className="pt-3">
                     {users &&
