@@ -35,7 +35,9 @@ const PeopleYouMayKnow = () => {
                                     image={user.image}
                                     targetSrc="/"
                                     onClick={() =>
-                                        console.log("invia messaggio")
+                                        console.log(
+                                            "invia messaggio a " + user.name,
+                                        )
                                     }
                                 />
                             );
