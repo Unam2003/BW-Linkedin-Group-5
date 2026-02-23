@@ -7,7 +7,7 @@ function App() {
     return (
         <>
             <div>
-                <RightBar />
+                <RightBar size="304px" />
             </div>
         </>
     );
