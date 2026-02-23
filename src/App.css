@@ -1,0 +1,15 @@
+#me-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.text-hover:hover {
+  color: black !important;
+}
+
+.spanUnderIcon {
+  font-size: 12px;
+  margin-top: 2px;
+}
