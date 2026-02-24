@@ -7,12 +7,12 @@ const Home = function () {
         <>
             <div className="d-flex mx-5 my-4 justify-content-center">
                 <div className="d-block d-md-none mt-3">
-                    <LeftBarHome size="100%" />
+                    <LeftBarHome size="100%" addClass="" />
                 </div>
             </div>
             <div className="d-flex mx-5 my-4 justify-content-center">
                 <div className="d-none d-md-block">
-                    <LeftBarHome size="225px" />
+                    <LeftBarHome size="225px" addClass="position-fixed" />
                 </div>
 
                 <div
