@@ -5,8 +5,10 @@ import HomeMain from "./main/home/HomeMain";
 const Home = function () {
     return (
         <>
-            <div className="d-block d-md-none mt-3">
-                <LeftBarHome size="100%" />
+            <div className="d-flex mx-5 my-4 justify-content-center">
+                <div className="d-block d-md-none mt-3">
+                    <LeftBarHome size="100%" />
+                </div>
             </div>
             <div className="d-flex mx-5 my-4 justify-content-center">
                 <div className="d-none d-md-block">
