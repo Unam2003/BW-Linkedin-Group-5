@@ -1,5 +1,5 @@
-import RightBar from "./RightBar/RightBar"
-import HomeMain from "./main/home/HomeMain"
+import SideBarDxHomePage from "./SideBarDxHomePage";
+import HomeMain from "./main/home/HomeMain";
 
 const Home = function () {
   return (
@@ -9,17 +9,17 @@ const Home = function () {
         <HomeMain />
 
         {/* RightBar sotto su mobile */}
-        <div className="d-block d-lg-none mt-3">
+        {/* <div className="d-block d-lg-none mt-3">
           <RightBar size="100%" />
-        </div>
+        </div> */}
       </div>
 
       {/* RightBar a destra su desktop */}
       <div className="d-none d-lg-block">
-        <RightBar size="304px" />
+        <SideBarDxHomePage size="304px" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
