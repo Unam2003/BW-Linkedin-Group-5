@@ -1,6 +1,18 @@
 import { Card } from "react-bootstrap";
+import getData from "../RightBar/getData";
+import { useEffect, useState } from "react";
 
 const PresentationLeftBar = () => {
+    const [profile, getProfile] = useState(undefined);
+
+    useEffect(() => {
+        getData(
+            "https://striveschool-api.herokuapp.com/api/profile/me",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTljMTA5NTBiYzFkZTAwMTU3N2I3OWMiLCJpYXQiOjE3NzE4MzY1NTEsImV4cCI6MTc3MzA0NjE1MX0.pFUJj7PHnqKwXxAdWF6BXDIKMzUUG8GS7tsvdUNOY8o",
+            getProfile,
+        );
+    }, []);
+
     return (
         <Card className=" rounded-3 border-1  border-light-subtle overflow-hidden">
             <div
@@ -21,8 +33,8 @@ const PresentationLeftBar = () => {
                         top: "-36px",
                     }}>
                     <img
-                        src="advertising/logo.jpg"
-                        alt="poste"
+                        src={profile?.image}
+                        alt={profile?.name + " " + profile?.surname}
                         className="w-100 h-100 object-fit-cover "
                         onError={(e) => {
                             e.currentTarget.src =
@@ -31,7 +43,7 @@ const PresentationLeftBar = () => {
                     />
                 </div>
                 <h6 className="mx-0 mb-1 mt-4">
-                    Samuel Valentini{" "}
+                    {profile?.name + " " + profile?.surname}{" "}
                     <svg
                         style={{ width: "16px" }}
                         xmlns="http://www.w3.org/2000/svg"
@@ -46,19 +58,18 @@ const PresentationLeftBar = () => {
                 </h6>
 
                 <div className="clamped" style={{ fontSize: "0.75rem" }}>
-                    IT/Technical Project Management | Consulente Informatico
-                    presso Self-Empolyed
+                    {profile?.title}
                 </div>
                 <div
                     className="text-body-tertiary clamped"
                     style={{ fontSize: "0.75rem" }}>
-                    Tuenno, Trentino-Alto Adige
+                    {profile?.area}
                 </div>
-                <div
+                {/* <div
                     className="clamped fw-semibold"
                     style={{ fontSize: "0.75rem" }}>
                     Self-Empolyed
-                </div>
+                </div> */}
                 <div className="pt-3"></div>
             </Card.Body>
         </Card>
