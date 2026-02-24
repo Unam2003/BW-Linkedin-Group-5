@@ -1,5 +1,7 @@
 import AnalysisLeftBar from "./AnalysisLeftBar";
+import BookmarkLeftBar from "./BookmarkLeftBar";
 import PresentationLeftBar from "./PresentationLeftBar";
+import TryPremium from "./TryPremium";
 
 const LeftBarHome = (props) => {
     return (
@@ -9,6 +11,8 @@ const LeftBarHome = (props) => {
                 style={{ width: props.size }}>
                 <PresentationLeftBar />
                 <AnalysisLeftBar />
+                <TryPremium />
+                <BookmarkLeftBar />
             </div>
         </div>
     );
