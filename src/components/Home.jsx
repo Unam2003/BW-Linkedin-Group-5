@@ -1,11 +1,25 @@
-import React from "react";
+import RightBar from "./RightBar/RightBar"
+import HomeMain from "./main/home/HomeMain"
 
 const Home = function () {
   return (
-    <div>
-      <h3>ciao</h3>
-    </div>
-  );
-};
+    <div className="d-flex mx-5 my-4">
+      <div className="me-4 flex-grow-1">
+        {/* MAIN (centro) */}
+        <HomeMain />
 
-export default Home;
+        {/* RightBar sotto su mobile */}
+        <div className="d-block d-lg-none mt-3">
+          <RightBar size="100%" />
+        </div>
+      </div>
+
+      {/* RightBar a destra su desktop */}
+      <div className="d-none d-lg-block">
+        <RightBar size="304px" />
+      </div>
+    </div>
+  )
+}
+
+export default Home
