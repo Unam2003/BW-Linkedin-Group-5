@@ -6,7 +6,7 @@ const Home = function () {
     return (
         <>
             <div className="d-flex mx-5 my-4 justify-content-center">
-                <div className="d-block d-md-none mt-3">
+                <div className="d-block d-md-none mt-3 mx-4 w-100">
                     <LeftBarHome size="100%" addClass="" />
                 </div>
             </div>
