@@ -1,21 +1,46 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Container, Card, Button, Dropdown } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 
 export default function Welcome() {
   const navigate = useNavigate()
 
-  // ✅ persistenza: se rimuovi l’account non torna dopo refresh
-  const [accountVisible, setAccountVisible] = useState(() => {
-    const saved = localStorage.getItem("li_account_visible")
-    return saved === null ? true : saved === "true"
-  })
+  const CHIAVE_UTENTE_REGISTRATO = "utenteRegistrato"
+  const CHIAVE_MOSTRA_ACCOUNT_SALVATO = "mostraAccountSalvato"
+  const CHIAVE_UTENTE_LOGGATO = "utenteLoggato"
 
-  useEffect(() => {
-    localStorage.setItem("li_account_visible", String(accountVisible))
-  }, [accountVisible])
+  const leggiUtenteRegistrato = () => {
+    const testo = localStorage.getItem(CHIAVE_UTENTE_REGISTRATO)
+    if (!testo) return null
+    try {
+      return JSON.parse(testo)
+    } catch {
+      return null
+    }
+  }
+
+  const leggiMostraAccountSalvato = () => {
+    const valore = localStorage.getItem(CHIAVE_MOSTRA_ACCOUNT_SALVATO)
+    return valore === null ? true : valore === "true"
+  }
+
+  const maskEmail = (email) => {
+    if (!email || !email.includes("@")) return email || ""
+    const [name, domain] = email.split("@")
+    return `${name?.[0] || ""}*****@${domain}`
+  }
+
+  const [utenteRegistrato, setUtenteRegistrato] = useState(() => leggiUtenteRegistrato())
+  const [mostraAccountSalvato, setMostraAccountSalvato] = useState(() => leggiMostraAccountSalvato())
+
+  // ✅ aggiorna sia stato che localStorage (così non serve useEffect)
+  const aggiornaMostraAccountSalvato = (valore) => {
+    setMostraAccountSalvato(valore)
+    localStorage.setItem(CHIAVE_MOSTRA_ACCOUNT_SALVATO, String(!!valore))
+  }
 
   const handleLoginSavedAccount = () => {
+    localStorage.setItem(CHIAVE_UTENTE_LOGGATO, "true")
     navigate("/", { replace: true })
   }
 
@@ -28,13 +53,17 @@ export default function Welcome() {
   }
 
   const handleRemoveAccount = () => {
-    setAccountVisible(false)
+    // nascondo e cancello dati
+    aggiornaMostraAccountSalvato(false)
+    localStorage.removeItem(CHIAVE_UTENTE_REGISTRATO)
+    setUtenteRegistrato(null)
   }
+
+  const mostraBloccoAccount = !!utenteRegistrato && mostraAccountSalvato
 
   return (
     <div className="bg-white min-vh-100 d-flex flex-column">
       <Container className="py-5 flex-grow-1 d-flex flex-column align-items-center">
-        {/* Logo LinkedIn */}
         <div className="mb-4">
           <i className="bi bi-linkedin text-primary" style={{ fontSize: "44px" }}></i>
         </div>
@@ -50,9 +79,8 @@ export default function Welcome() {
         <Card className="w-100 shadow-sm" style={{ maxWidth: 420 }}>
           <Card.Body className="p-0">
             {/* Riga account salvato */}
-            {accountVisible && (
+            {mostraBloccoAccount && (
               <div className="d-flex align-items-stretch border-bottom">
-                {/* Bottone account */}
                 <Button
                   type="button"
                   className="flex-grow-1 text-start d-flex align-items-center gap-3 rounded-0 border-0 py-3 px-3 bg-white"
@@ -63,21 +91,17 @@ export default function Welcome() {
                   </div>
 
                   <div className="lh-sm">
-                    <div className="fw-semibold text-dark">Samuel Valentini</div>
+                    <div className="fw-semibold text-dark">
+                      {utenteRegistrato.name} {utenteRegistrato.surname}
+                    </div>
                     <div className="text-secondary" style={{ fontSize: 13 }}>
-                      s*****@gmail.com
+                      {maskEmail(utenteRegistrato.email)}
                     </div>
                   </div>
                 </Button>
 
-                {/* ✅ SOLO 3 puntini, SENZA freccina */}
                 <Dropdown align="end" className="d-flex">
-                  <Dropdown.Toggle
-                    bsPrefix="btn" // evita la classe "dropdown-toggle" che aggiunge la freccina
-                    variant="light"
-                    className="rounded-0 border-0 bg-white px-3"
-                    style={{ boxShadow: "none" }}
-                  >
+                  <Dropdown.Toggle bsPrefix="btn" variant="light" className="rounded-0 border-0 bg-white px-3" style={{ boxShadow: "none" }}>
                     <i className="bi bi-three-dots-vertical text-secondary"></i>
                   </Dropdown.Toggle>
 
@@ -103,7 +127,6 @@ export default function Welcome() {
           </Card.Body>
         </Card>
 
-        {/* Link Iscriviti ora -> Registration */}
         <div className="mt-4 text-secondary">
           Non hai un account LinkedIn?{" "}
           <Button variant="link" className="p-0 align-baseline text-primary fw-semibold text-decoration-none" onClick={handleGoToRegistration}>

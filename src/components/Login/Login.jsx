@@ -5,13 +5,17 @@ import { useNavigate } from "react-router-dom"
 export default function Login() {
   const navigate = useNavigate()
 
+  const CHIAVE_UTENTE_LOGGATO = "utenteLoggato"
+
   const [emailOrPhone, setEmailOrPhone] = useState("")
   const [password, setPassword] = useState("")
   const [showPwd, setShowPwd] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // ✅ solo frontend: simuliamo login e andiamo in home
+
+    // ✅ login finto
+    localStorage.setItem(CHIAVE_UTENTE_LOGGATO, "true")
     navigate("/", { replace: true })
   }
 
@@ -25,7 +29,6 @@ export default function Login() {
                 Accedi
               </h1>
 
-              {/* Form login */}
               <Form onSubmit={handleSubmit}>
                 <Form.Control className="py-2" placeholder="Email o telefono" value={emailOrPhone} onChange={(e) => setEmailOrPhone(e.target.value)} />
 
@@ -37,21 +40,10 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <Button
-                    type="button" // ✅ importante: non deve submit-tare il form
-                    variant="link"
-                    className="text-decoration-none fw-semibold"
-                    onClick={() => setShowPwd((v) => !v)}
-                  >
+                  <Button type="button" variant="link" className="text-decoration-none fw-semibold" onClick={() => setShowPwd((v) => !v)}>
                     {showPwd ? "Nascondi" : "Mostra"}
                   </Button>
                 </InputGroup>
-
-                <div className="mt-3">
-                  <Button type="button" variant="link" className="p-0 text-decoration-none fw-semibold" onClick={() => {}}>
-                    Hai dimenticato la password?
-                  </Button>
-                </div>
 
                 <Button type="submit" className="w-100 rounded-pill py-3 mt-3 fw-semibold" style={{ backgroundColor: "#0a66c2", borderColor: "#0a66c2" }}>
                   Accedi
