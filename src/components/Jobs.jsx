@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import LeftBarHome from "./LeftBarHome/LeftBarHome";
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -48,7 +49,10 @@ export default function Jobs() {
     <div className="bg-light min-vh-100 py-4">
       <div className="container">
         <div className="row">
-          <div className="col-12 col-lg-3 mb-3"></div>
+          <div className="col-12 col-lg-3 mb-3">
+            {" "}
+            <LeftBarHome />
+          </div>
 
           <div className="col-12 col-lg-9">
             <div className="card shadow-sm border-0">
