@@ -7,7 +7,7 @@ import ProfilePage from "./components/ProfilePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import RightBar from "./components/RightBar/RightBar";
-
+import Jobs from "./components/Jobs";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/me" element={<ProfilePage />} />
+        <Route path="/jobs" element={<Jobs />} />
       </Routes>
     </BrowserRouter>
   );

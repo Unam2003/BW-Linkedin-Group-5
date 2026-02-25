@@ -70,7 +70,7 @@ export default function SideBarDxHomePage() {
           <button className="btn btn-primary btn-sm mt-2">Explore jobs</button>
 
           <div className="mt-3 rounded overflow-hidden">
-            <img src="/advertising/advertising-for-bar.png" alt="" className="w-100" style={{ height: 120, objectFit: "cover", display: "block" }} />
+            <img src="public/advertising/imgsidebardx.png" alt="" className="w-100" style={{ height: 120, objectFit: "cover", display: "block" }} />
           </div>
         </div>
       </div>
