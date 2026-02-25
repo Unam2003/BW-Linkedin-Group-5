@@ -3,11 +3,31 @@ import HomeFooter from "./HomeFooter";
 
 export default function SideBarDxHomePage() {
   const news = [
-    { id: 1, title: "Usa: dazi al 15% per tutti", meta: "8h fa • 514 lettori" },
-    { id: 2, title: 'Milano Cortina "ha definito un nuovo ..."', meta: "3h fa • 166 lettori" },
-    { id: 3, title: "Più investimenti per gli alberghi italiani", meta: "3 giorni fa • 157 lettori" },
-    { id: 4, title: "Unipol distribuiti ai soci 804 milioni", meta: "3 giorni fa • 106 lettori" },
-    { id: 5, title: "Cosa ci lascerà Milano Cortina", meta: "2h fa • 8365 lettori" },
+    {
+      id: 1,
+      title: "Usa: dazi al 15% per tutti",
+      meta: "8h fa • 514 lettori",
+    },
+    {
+      id: 2,
+      title: 'Milano Cortina "ha definito un nuovo ..."',
+      meta: "3h fa • 166 lettori",
+    },
+    {
+      id: 3,
+      title: "Più investimenti per gli alberghi italiani",
+      meta: "3 giorni fa • 157 lettori",
+    },
+    {
+      id: 4,
+      title: "Unipol distribuiti ai soci 804 milioni",
+      meta: "3 giorni fa • 106 lettori",
+    },
+    {
+      id: 5,
+      title: "Cosa ci lascerà Milano Cortina",
+      meta: "2h fa • 8365 lettori",
+    },
   ];
 
   return (
@@ -70,7 +90,16 @@ export default function SideBarDxHomePage() {
           <button className="btn btn-primary btn-sm mt-2">Explore jobs</button>
 
           <div className="mt-3 rounded overflow-hidden">
-            <img src="public/advertising/imgsidebardx.png" alt="" className="w-100" style={{ height: 120, objectFit: "cover", display: "block" }} />
+            <img
+              src="public/advertising/imgsidebardx.png"
+              alt=""
+              className="w-100"
+              style={{
+                height: 120,
+                objectFit: "cover",
+                display: "block",
+              }}
+            />
           </div>
         </div>
       </div>
