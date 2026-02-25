@@ -19,7 +19,7 @@ const getMData = (url, auth, setData) => {
         })
         .then((res) => {
             setData(res);
-            console.log(res);
+            // console.log(res);
         })
         .catch((e) => {
             console.log(

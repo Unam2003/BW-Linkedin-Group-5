@@ -153,9 +153,9 @@ const MessagingApp = () => {
                                     </Card.Body>
                                 </Card>
                             )}
-                            {messages?.map((mes) => {
+                            {messages?.toReversed().map((mes) => {
                                 const mess = JSON.parse(mes.comment);
-                                console.log(mess);
+                                // console.log(mess);
                                 const thisSender = arrayOfUsers.filter(
                                     (user) => user?._id === mess.sender,
                                 );
@@ -166,7 +166,7 @@ const MessagingApp = () => {
                                 const sendDate = new Date(
                                     mess.timestamp,
                                 ).toLocaleString("it-IT");
-                                console.log(sendDate);
+                                // console.log(sendDate);
 
                                 return (
                                     <Card className="mb-1" key={mes._id}>
