@@ -33,7 +33,7 @@ export default function Welcome() {
   const [utenteRegistrato, setUtenteRegistrato] = useState(() => leggiUtenteRegistrato())
   const [mostraAccountSalvato, setMostraAccountSalvato] = useState(() => leggiMostraAccountSalvato())
 
-  // ✅ aggiorna sia stato che localStorage (così non serve useEffect)
+  // aggiorna sia stato che localStorage 
   const aggiornaMostraAccountSalvato = (valore) => {
     setMostraAccountSalvato(valore)
     localStorage.setItem(CHIAVE_MOSTRA_ACCOUNT_SALVATO, String(!!valore))
@@ -57,6 +57,7 @@ export default function Welcome() {
     aggiornaMostraAccountSalvato(false)
     localStorage.removeItem(CHIAVE_UTENTE_REGISTRATO)
     setUtenteRegistrato(null)
+    window.dispatchEvent(new Event("utenteRegistratoUpdated"))
   }
 
   const mostraBloccoAccount = !!utenteRegistrato && mostraAccountSalvato

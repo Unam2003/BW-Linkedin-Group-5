@@ -14,7 +14,6 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // ✅ login finto
     localStorage.setItem(CHIAVE_UTENTE_LOGGATO, "true")
     navigate("/", { replace: true })
   }
