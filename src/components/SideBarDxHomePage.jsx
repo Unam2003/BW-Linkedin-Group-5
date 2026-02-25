@@ -24,6 +24,69 @@ const getNews = (url, setData) => {
             // console.log(res);
         })
         .catch((e) => {
+            // in caso di errore riempiamo l'array con dati statici
+            setData([
+                {
+                    guid: 1,
+                    title: "Usa: dazi al 15% per tutti",
+                    link: "/",
+                    pubDate: new Date() - 7200000,
+                },
+                {
+                    guid: 2,
+                    title: 'Milano Cortina "ha definito un nuovo ..."',
+                    link: "/",
+                    pubDate: new Date() - 3200000,
+                },
+                {
+                    guid: 3,
+                    title: "Più investimenti per gli alberghi italiani",
+                    link: "/",
+                    pubDate: new Date() - 12200000,
+                },
+                {
+                    guid: 4,
+                    title: "Unipol distribuiti ai soci 804 milioni",
+                    link: "/",
+                    pubDate: new Date() - 2200000,
+                },
+                {
+                    guid: 5,
+                    title: "Cosa ci lascerà Milano Cortina",
+                    link: "/",
+                    pubDate: new Date() - 20200000,
+                },
+                {
+                    guid: 6,
+                    title: "Usa: dazi al 15% per tutti",
+                    link: "/",
+                    pubDate: new Date() - 7200000,
+                },
+                {
+                    guid: 7,
+                    title: 'Milano Cortina "ha definito un nuovo ..."',
+                    link: "/",
+                    pubDate: new Date() - 3200000,
+                },
+                {
+                    guid: 8,
+                    title: "Più investimenti per gli alberghi italiani",
+                    link: "/",
+                    pubDate: new Date() - 12200000,
+                },
+                {
+                    guid: 9,
+                    title: "Unipol distribuiti ai soci 804 milioni",
+                    link: "/",
+                    pubDate: new Date() - 2200000,
+                },
+                {
+                    guid: 10,
+                    title: "Cosa ci lascerà Milano Cortina",
+                    link: "/",
+                    pubDate: new Date() - 20200000,
+                },
+            ]);
             console.log(
                 `Error communicating with the server, please try again. Error: ${e}`,
             );
@@ -40,34 +103,6 @@ export default function SideBarDxHomePage() {
             setNews,
         );
     }, []);
-
-    // const news = [
-    //   {
-    //     id: 1,
-    //     title: "Usa: dazi al 15% per tutti",
-    //     meta: "8h fa • 514 lettori",
-    //   },
-    //   {
-    //     id: 2,
-    //     title: 'Milano Cortina "ha definito un nuovo ..."',
-    //     meta: "3h fa • 166 lettori",
-    //   },
-    //   {
-    //     id: 3,
-    //     title: "Più investimenti per gli alberghi italiani",
-    //     meta: "3 giorni fa • 157 lettori",
-    //   },
-    //   {
-    //     id: 4,
-    //     title: "Unipol distribuiti ai soci 804 milioni",
-    //     meta: "3 giorni fa • 106 lettori",
-    //   },
-    //   {
-    //     id: 5,
-    //     title: "Cosa ci lascerà Milano Cortina",
-    //     meta: "2h fa • 8365 lettori",
-    //   },
-    // ];
 
     return (
         <aside className="d-flex flex-column gap-2">
