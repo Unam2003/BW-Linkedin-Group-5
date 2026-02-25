@@ -11,50 +11,56 @@ import Jobs from "./components/Jobs";
 import Welcome from "./components/Login/Welcome";
 import Registration from "./components/Login/Registration";
 import Login from "./components/Login/Login";
+import MessagingApp from "./components/MessagingApp/MessagingApp";
 
 // ✅ chiave chiara
 const CHIAVE_UTENTE_LOGGATO = "utenteLoggato";
 
 function RequireAuth({ children }) {
-  const utenteLoggato = localStorage.getItem(CHIAVE_UTENTE_LOGGATO) === "true";
-  return utenteLoggato ? children : <Navigate to="/welcome" replace />;
+    const utenteLoggato =
+        localStorage.getItem(CHIAVE_UTENTE_LOGGATO) === "true";
+    return utenteLoggato ? children : <Navigate to="/welcome" replace />;
 }
 
 function App() {
-  const location = useLocation();
-  const hideNav = location.pathname === "/welcome" || location.pathname === "/registration" || location.pathname === "/login";
+    const location = useLocation();
+    const hideNav =
+        location.pathname === "/welcome" ||
+        location.pathname === "/registration" ||
+        location.pathname === "/login";
 
-  return (
-    <>
-      {!hideNav && <MyNav />}
+    return (
+        <>
+            {!hideNav && <MyNav />}
 
-      <Routes>
-        {/* AUTH */}
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/registration" element={<Registration />} />
-        <Route path="/login" element={<Login />} />
+            <Routes>
+                {/* AUTH */}
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/registration" element={<Registration />} />
+                <Route path="/login" element={<Login />} />
 
-        {/* APP */}
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <Home />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/profile/me"
-          element={
-            <RequireAuth>
-              <ProfilePage />
-            </RequireAuth>
-          }
-        />
-        <Route path="/jobs" element={<Jobs />} />
-      </Routes>
-    </>
-  );
+                {/* APP */}
+                <Route
+                    path="/"
+                    element={
+                        <RequireAuth>
+                            <Home />
+                        </RequireAuth>
+                    }
+                />
+                <Route
+                    path="/profile/me"
+                    element={
+                        <RequireAuth>
+                            <ProfilePage />
+                        </RequireAuth>
+                    }
+                />
+                <Route path="/jobs" element={<Jobs />} />
+                <Route path="/messages" element={<MessagingApp />} />
+            </Routes>
+        </>
+    );
 }
 
 export default App;
