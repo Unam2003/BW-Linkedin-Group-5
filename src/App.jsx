@@ -1,24 +1,58 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
-import { Container, Row, Col } from "react-bootstrap";
-import MyNav from "./components/MyNav";
-import Home from "./components/Home";
-import ProfilePage from "./components/ProfilePage";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-import RightBar from "./components/RightBar/RightBar";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom"
+import "./App.css"
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap-icons/font/bootstrap-icons.css"
 
-function App() {
-  return (
-    <BrowserRouter>
-      <MyNav />
+import MyNav from "./components/MyNav"
+import Home from "./components/Home"
+import ProfilePage from "./components/ProfilePage"
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/profile/me" element={<ProfilePage />} />
-      </Routes>
-    </BrowserRouter>
-  );
+import Welcome from "./components/Login/Welcome"
+import Registration from "./components/Login/Registration"
+import Login from "./components/Login/Login"
+
+// ✅ chiave chiara
+const CHIAVE_UTENTE_LOGGATO = "utenteLoggato"
+
+function RequireAuth({ children }) {
+  const utenteLoggato = localStorage.getItem(CHIAVE_UTENTE_LOGGATO) === "true"
+  return utenteLoggato ? children : <Navigate to="/welcome" replace />
 }
 
-export default App;
+function App() {
+  const location = useLocation()
+  const hideNav = location.pathname === "/welcome" || location.pathname === "/registration" || location.pathname === "/login"
+
+  return (
+    <>
+      {!hideNav && <MyNav />}
+
+      <Routes>
+        {/* AUTH */}
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+
+        {/* APP */}
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile/me"
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
+      </Routes>
+    </>
+  )
+}
+
+export default App
