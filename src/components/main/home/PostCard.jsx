@@ -1,11 +1,11 @@
-import { Card } from "react-bootstrap";
-import { useState } from "react";
-import CommentArea from "./CommentArea";
+import { Card } from "react-bootstrap"
+import { useState } from "react"
+import CommentArea from "./CommentArea"
 
 function PostCard({ post }) {
   // trasformo createdAt in una data leggibile
-  const date = new Date(post.createdAt);
-  const [showComments, setShowComments] = useState(false);
+  const date = new Date(post.createdAt)
+  const [showComments, setShowComments] = useState(false)
 
   return (
     <Card className="rounded-4">
@@ -69,7 +69,7 @@ function PostCard({ post }) {
         {showComments && <CommentArea postId={post._id} />}
       </Card.Body>
     </Card>
-  );
+  )
 }
 
-export default PostCard;
+export default PostCard
