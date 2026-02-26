@@ -1,34 +1,44 @@
 body {
-    background-color: #f4f2ee !important;
+  background-color: #f4f2ee !important;
 }
 
 #me-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .text-hover:hover {
-    color: black !important;
+  color: black !important;
 }
 
 .spanUnderIcon {
-    font-size: 12px;
-    margin-top: 2px;
+  font-size: 12px;
+  margin-top: 2px;
 }
 
 .clamped {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .bethover:hover,
 .bethover:active,
 .bethover:focus-visible {
-    background-color: #f3f3f3 !important;
+  background-color: #f3f3f3 !important;
+}
+
+#notifications-dropdown::after {
+  display: none !important;
+}
+
+.nav-item.dropdown .dropdown-toggle {
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
 }

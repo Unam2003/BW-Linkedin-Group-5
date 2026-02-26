@@ -1,66 +1,66 @@
-import { useState, useEffect, useCallback } from "react"
-import { Form, Button, ListGroup, Alert } from "react-bootstrap"
-import { getComments, createComment, deleteComment } from "../../../api"
+import { useState, useEffect, useCallback } from "react";
+import { Form, Button, ListGroup, Alert } from "react-bootstrap";
+import { getComments, createComment, deleteComment } from "../../../api";
 
 const CommentArea = function ({ postId }) {
-  const [comments, setComments] = useState([])
-  const [text, setText] = useState("")
-  const [showSuccess, setShowSuccess] = useState(false)
+  const [comments, setComments] = useState([]);
+  const [text, setText] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const loadComments = useCallback(() => {
     getComments(postId)
       .then((data) => {
-        console.log("Commenti recuperati", data)
-        setComments(data)
+        console.log("Commenti recuperati", data);
+        setComments(data);
       })
       .catch((err) => {
-        console.log("Errore nel recupero", err)
-      })
-  }, [postId])
+        console.log("Errore nel recupero", err);
+      });
+  }, [postId]);
 
   useEffect(() => {
     // Quando cambia il postId, ricarico i commenti del post
-    loadComments()
-  }, [loadComments])
+    loadComments();
+  }, [loadComments]);
 
   // Qui invio un nuovo commento
   const submitComment = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const nuovoCommento = {
       comment: text,
       rate: "5",
       elementId: postId,
-    }
+    };
 
     createComment(nuovoCommento)
       .then((data) => {
-        console.log("Commento inviato", data)
-        setText("")
+        console.log("Commento inviato", data);
+        setText("");
         // Dopo l'invio aggiorno subito la lista dei commenti
-        loadComments()
-        setShowSuccess(true)
-        setTimeout(() => setShowSuccess(false), 1500)
+        loadComments();
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 1500);
       })
       .catch((err) => {
-        console.log("Errore nell'invio", err)
-      })
-  }
+        console.log("Errore nell'invio", err);
+      });
+  };
 
   // Qui elimino un commento e poi ricarico la lista
   const handleDelete = (commentId) => {
     if (window.confirm("Vuoi davvero eliminare questo commento?")) {
       deleteComment(commentId)
         .then(() => {
-          console.log("Commento eliminato con successo")
-          loadComments()
+          console.log("Commento eliminato con successo");
+          loadComments();
         })
         .catch((err) => {
-          console.log("Errore nella cancellazione", err)
-          alert("Non puoi eliminare questo commento (forse non l'hai scritto tu?)")
-        })
+          console.log("Errore nella cancellazione", err);
+          alert("Non puoi eliminare questo commento (forse non l'hai scritto tu?)");
+        });
     }
-  }
+  };
 
   return (
     <div className="mt-3">
@@ -92,7 +92,7 @@ const CommentArea = function ({ postId }) {
         ))}
       </ListGroup>
     </div>
-  )
-}
+  );
+};
 
-export default CommentArea
+export default CommentArea;
