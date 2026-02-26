@@ -4,16 +4,16 @@ import { Alert, Button, Card, Form, Modal } from "react-bootstrap"
 function LocalSections({ education, setEducation, skills, setSkills, languages, setLanguages, interests, setInterests }) {
   // gestisco i 4 modali e l’elemento in modifica se c’è
   const [showEduModal, setShowEduModal] = useState(false)
-  const [editEdu, setEditEdu] = useState(null) 
+  const [editEdu, setEditEdu] = useState(null)
 
   const [showSkillModal, setShowSkillModal] = useState(false)
-  const [editSkill, setEditSkill] = useState(null) 
+  const [editSkill, setEditSkill] = useState(null)
 
   const [showLangModal, setShowLangModal] = useState(false)
-  const [editLang, setEditLang] = useState(null) 
+  const [editLang, setEditLang] = useState(null)
 
   const [showInterestModal, setShowInterestModal] = useState(false)
-  const [editInterest, setEditInterest] = useState(null) 
+  const [editInterest, setEditInterest] = useState(null)
 
   return (
     <>

@@ -1,9 +1,16 @@
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { Alert, Button, Card, Col, Form, Modal, Row, Spinner } from "react-bootstrap"
-import { getExperiences, getMyProfile } from "../../../api"
+import { getMyProfile } from "../../../api"
 import ProfileHeader from "./ProfileHeader"
 import ExperienceSection from "./ExperienceSection"
 import LocalSections from "./LocalSections"
+
+function normalizeKeyPart(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+}
 
 // creo un hook per salvare/leggere JSON in localStorage
 function useJsonLocalStorageState(key, fallback) {
@@ -42,26 +49,69 @@ function useJsonLocalStorageState(key, fallback) {
   return [value, setValue]
 }
 
-// gestisco la parte centrale del PROFILO: header + sezioni + esperienza (da API)
+// gestisco la parte centrale del PROFILO: header + sezioni + esperienza (locale per utente)
 const ProfileMain = function () {
-  // tengo profilo ed esperienze
+  // tengo profilo (header da API)
   const [me, setMe] = useState(null)
-  const [experiences, setExperiences] = useState([])
 
   // gestisco loading/error
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
-  // creo una base key per salvare dati separati per utente
-  const keyBase = `li_${me?._id || "guest"}`
+  // leggo l'utente registrato locale (creato nella tua pagina Registration)
+  // NB: lo tengo in state e lo rileggo anche se cambia il localStorage
+  const [utenteRegistrato, setUtenteRegistrato] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("utenteRegistrato") || "null")
+    } catch (e) {
+      console.warn("utenteRegistrato parse error:", e)
+      return null
+    }
+  })
 
-  // tengo le sezioni “locali” (personalizzabili) in localStorage
+  // se il localStorage cambia (es. registro un nuovo account / cambio dati), aggiorno lo state
+  useEffect(() => {
+    const read = () => {
+      try {
+        setUtenteRegistrato(JSON.parse(localStorage.getItem("utenteRegistrato") || "null"))
+      } catch {
+        setUtenteRegistrato(null)
+      }
+    }
+
+    // cambia solo tra tab diverse, ma è comunque utile
+    const onStorage = (e) => {
+      if (e?.key === "utenteRegistrato") read()
+    }
+
+    window.addEventListener("storage", onStorage)
+    // utile nello stesso tab (storage event non scatta nello stesso tab)
+    window.addEventListener("utenteRegistratoUpdated", read)
+    return () => {
+      window.removeEventListener("storage", onStorage)
+      window.removeEventListener("utenteRegistratoUpdated", read)
+    }
+  }, [])
+
+  // chiave unica per l'ACCOUNT ATTIVO
+  const activeAccountKey = useMemo(() => {
+    const raw = me?.email || me?.username || me?._id || utenteRegistrato?.email || utenteRegistrato?.username || "guest"
+    return normalizeKeyPart(raw)
+  }, [me?.email, me?.username, me?._id, utenteRegistrato?.email, utenteRegistrato?.username])
+
+  // base key comune per TUTTE le sezioni locali 
+  const keyBase = `li_${activeAccountKey}`
+
+  // esperienza ORA locale per utente 
+  const [experiences, setExperiences] = useJsonLocalStorageState(`${keyBase}_experiences`, [])
+
+  // tengo le sezioni locali personalizzabili in localStorage
   const [education, setEducation] = useJsonLocalStorageState(`${keyBase}_education`, [])
   const [skills, setSkills] = useJsonLocalStorageState(`${keyBase}_skills`, [])
   const [languages, setLanguages] = useJsonLocalStorageState(`${keyBase}_languages`, [])
   const [interests, setInterests] = useJsonLocalStorageState(`${keyBase}_interests`, [])
 
-  // tengo “About” in localStorage + modal
+  // tengo About in localStorage + modal
   const [about, setAbout] = useJsonLocalStorageState(`${keyBase}_about`, "")
   const [showAboutModal, setShowAboutModal] = useState(false)
 
@@ -70,27 +120,24 @@ const ProfileMain = function () {
     if (me?.bio) {
       setAbout((prev) => prev || me.bio)
     }
-  }, [me?.bio, setAbout])
+  }, [me?.bio, keyBase, setAbout])
 
-  // carico profilo e poi esperienze
+  // se l'utente si è registrato localmente, uso il campo "about" come default della sezione Informazioni
+  useEffect(() => {
+    const aboutRegistrazione = utenteRegistrato?.about?.trim()
+    if (aboutRegistrazione) {
+      setAbout((prev) => prev || aboutRegistrazione)
+    }
+  }, [utenteRegistrato, keyBase, setAbout])
+
+  // carico solo il profilo header dal token
   const load = useCallback(async () => {
     try {
       setLoading(true)
       setError("")
 
-      // prendo il mio profilo
       const profile = await getMyProfile()
       setMe(profile)
-
-      // prendo le esperienze solo se ho l’id
-      if (profile?._id) {
-        const exp = await getExperiences(profile._id)
-        // ordino per data inizio (più recente)
-        const sorted = [...exp].sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-        setExperiences(sorted)
-      } else {
-        setExperiences([])
-      }
     } catch (e) {
       setError(e?.message || "Errore nel caricamento. Controlla il token in src/api.js")
     } finally {
@@ -105,14 +152,12 @@ const ProfileMain = function () {
 
   return (
     <div className="d-flex flex-column gap-3">
-      {/* mostro errore se c’è */}
       {error && (
         <Alert variant="danger" className="rounded-4">
           {error}
         </Alert>
       )}
 
-      {/* scelgo tra loading e contenuto */}
       {loading ? (
         <div className="text-muted d-flex align-items-center gap-2">
           <Spinner size="sm" /> Caricamento profilo...
@@ -120,19 +165,14 @@ const ProfileMain = function () {
       ) : (
         me && (
           <>
-            {/* stampo le sezioni principali */}
             <ProfileHeader profile={me} />
             <AnalyticsCard />
-
-            {/* passo la bio “about” salvata in localStorage */}
             <AboutCard bio={about} onEdit={() => setShowAboutModal(true)} />
-
             <ActivityCard />
 
-            {/* passo userId e onRefresh=load così aggiorno dopo CRUD */}
-            <ExperienceSection userId={me._id} experiences={experiences} onRefresh={load} />
+            {/* Esperienza personalizzata per utente localStorage */}
+            <ExperienceSection experiences={experiences} setExperiences={setExperiences} />
 
-            {/* passo tutte le sezioni locali e i setter */}
             <LocalSections
               education={education}
               setEducation={setEducation}
@@ -147,7 +187,6 @@ const ProfileMain = function () {
         )
       )}
 
-      {/* gestisco il modal About */}
       <AboutModal
         show={showAboutModal}
         onHide={() => setShowAboutModal(false)}
@@ -162,7 +201,6 @@ const ProfileMain = function () {
 }
 
 function AnalyticsCard() {
-  // mostro una card statica “Analisi”
   return (
     <Card className="rounded-4">
       <Card.Body>
@@ -203,7 +241,6 @@ function AnalyticsCard() {
 }
 
 function AboutCard({ bio, onEdit }) {
-  // mostro il testo “Informazioni” + tasto modifica
   return (
     <Card className="rounded-4">
       <Card.Body>
@@ -224,7 +261,6 @@ function AboutCard({ bio, onEdit }) {
 }
 
 function ActivityCard() {
-  // mostro una card statica “Attività”
   return (
     <Card className="rounded-4">
       <Card.Body>
@@ -242,15 +278,12 @@ function ActivityCard() {
 }
 
 function AboutModal({ show, onHide, value, onSave }) {
-  // tengo il testo in stato locale del modal
   const [text, setText] = useState("")
 
-  // riempio il textarea quando apro
   const reset = () => {
     setText(value || "")
   }
 
-  // passo su al parent il valore salvato
   const save = () => {
     onSave(text)
   }

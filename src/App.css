@@ -26,3 +26,9 @@ body {
     text-overflow: ellipsis;
     word-break: break-word;
 }
+
+.bethover:hover,
+.bethover:active,
+.bethover:focus-visible {
+    background-color: #f3f3f3 !important;
+}

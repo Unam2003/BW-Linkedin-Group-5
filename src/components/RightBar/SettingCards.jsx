@@ -15,7 +15,7 @@ const SettingCards = () => {
 
                 <SettingCard
                     title="Profilo pubblico e URL"
-                    value="www.linkedin.com/in/samuel-valentini"
+                    value="www.linkedin.com/in/me"
                     onEdit={() => console.log("edit url")}
                 />
             </Card.Body>
