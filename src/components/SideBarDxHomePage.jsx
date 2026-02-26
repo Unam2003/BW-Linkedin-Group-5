@@ -1,5 +1,6 @@
 import React from "react";
 import HomeFooter from "./HomeFooter";
+import { useNavigate } from "react-router-dom";
 
 export default function SideBarDxHomePage() {
   const news = [
@@ -29,6 +30,7 @@ export default function SideBarDxHomePage() {
       meta: "2h fa • 8365 lettori",
     },
   ];
+  const navigate = useNavigate();
 
   return (
     <aside className="d-flex flex-column gap-2">
@@ -87,7 +89,9 @@ export default function SideBarDxHomePage() {
             Your job search powered by your network
           </div>
 
-          <button className="btn btn-primary btn-sm mt-2">Explore jobs</button>
+          <button className="btn btn-primary btn-sm mt-2" onClick={() => navigate("/jobs")}>
+            Explore jobs
+          </button>
 
           <div className="mt-3 rounded overflow-hidden">
             <img
